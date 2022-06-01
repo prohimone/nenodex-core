@@ -42,6 +42,22 @@ describe("core", function () {
     mim = await token.deploy('MIM', 'MIM', 18, owner.address);
     dai = await token.deploy('DAI', 'DAI', 18, owner.address);
 
+    await wftm.mint(owner.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await wftm.mint(owner2.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await wftm.mint(owner3.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+
+    await usdc.mint(owner.address, ethers.BigNumber.from("1000000000000000000"));
+    await usdc.mint(owner2.address, ethers.BigNumber.from("1000000000000000000"));
+    await usdc.mint(owner3.address, ethers.BigNumber.from("1000000000000000000"));
+
+    await mim.mint(owner.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await mim.mint(owner2.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await mim.mint(owner3.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+
+    await dai.mint(owner.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await dai.mint(owner2.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+    await dai.mint(owner3.address, ethers.BigNumber.from("1000000000000000000000000000000"));
+
     await wftm.deployed();
     await usdc.deployed();
     await mim.deployed();
@@ -86,10 +102,22 @@ describe("core", function () {
 
   it("confirm pair for mim-dai", async function () {
     const BaseV1Pair = await ethers.getContractFactory("UniswapV2Pair");
-
     const address1 = await factory.getPair(mim.address, dai.address);
-    pair = await BaseV1Pair.attach(address1);
-    console.log(pair.address)
+    pair1 = await BaseV1Pair.attach(address1);
+  });
+
+  it("BaseV1Router01 addLiquidity", async function () {
+
+    const mim_100000000 = ethers.BigNumber.from("100000000000000000000000000");
+    const dai_100000000 = ethers.BigNumber.from("100000000000000000000000000");
+
+    await dai.approve(router.address, dai_100000000);
+    await mim.approve(router.address, mim_100000000);
+    console.log(router.address)
+    // await router.addLiquidity(mim.address, dai.address, mim_100000000, dai_100000000, mim_100000000, dai_100000000, owner.address, Date.now());
+    // console.log("LPair3 (Mim-Dai) balance of: " + await pair1.balanceOf(owner.address));
+    // console.log("MIM balance owner: " +  await mim.balanceOf(owner.address));
+    // console.log("DAI balance owner: " + await dai.balanceOf(owner.address));
   });
 
 });
