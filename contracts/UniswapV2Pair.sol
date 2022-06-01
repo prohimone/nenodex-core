@@ -8,6 +8,7 @@ import './libraries/UQ112x112.sol';
 import './interfaces/IERC20.sol';
 import './interfaces/IUniswapV2Factory.sol';
 import './interfaces/IUniswapV2Callee.sol';
+import "hardhat/console.sol";
 
 contract UniswapV2Pair is UniswapV2ERC20 {
     using SafeMath  for uint;
@@ -65,6 +66,7 @@ contract UniswapV2Pair is UniswapV2ERC20 {
 
     // called once by the factory at time of deployment
     function initialize(address _token0, address _token1) external {
+        console.log("Pair: Initialize");
         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
         token0 = _token0;
         token1 = _token1;
