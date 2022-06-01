@@ -17,9 +17,13 @@ const token1 = await Token1.deploy(1000000);
 console.log("Token1 address: " + token1.address);
 console.log("Token1 balance: " + await token1.balanceOf(owner.address));
 
-console.log(await factory.createPair(token0.address, token1.address)) ;
-console.log("t0t1Pair address: "+ await factory.getPair(token0.address, token1.address));
-// console.log(await factory.feeTo())
+await factory.createPair(token0.address, token1.address)
+
+const Pair = await ethers.getContractFactory("UniswapV2Pair");
+const addr = await factory.getPair(token0.address, token1.address);
+
+const t0t1 = Pair.attach(addr);
+console.log("t0t1Pair address: "+ t0t1.address);
 }
 
 main()
