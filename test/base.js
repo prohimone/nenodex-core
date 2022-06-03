@@ -89,7 +89,7 @@ describe("core", function () {
   });
 
   it("deploy UniswapV2Router02 and test factory address", async function () {
-    const BaseV1Router = await ethers.getContractFactory("UniswapV2Router02");
+    const BaseV1Router = await ethers.getContractFactory("UniswapV2Router02",);
     router = await BaseV1Router.deploy(factory.address, wftm.address);
     await router.deployed();
 
@@ -103,7 +103,11 @@ describe("core", function () {
   it("confirm pair for mim-dai", async function () {
     const BaseV1Pair = await ethers.getContractFactory("UniswapV2Pair");
     const address1 = await factory.getPair(mim.address, dai.address);
+    console.log(address1);
     pair1 = await BaseV1Pair.attach(address1);
+    expect(await pair1.address).to.equal(address1);
+    pair1.
+
   });
 
   it("BaseV1Router01 addLiquidity", async function () {
