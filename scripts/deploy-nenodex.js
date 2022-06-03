@@ -29,6 +29,21 @@ console.log(await factory.allPairsLength())
 await factory.createPair(mim.address, dai.address)
 console.log(await factory.allPairsLength())
 
+const Router = await ethers.getContractFactory("NenodexV1Router01");
+const router = await Router.deploy(factory.address, wftm.address);
+// console.log(router);
+console.log("Router address: " + router.address);
+console.log("Router weth: "+ await router.WETH());
+
+const mim_100000000 = ethers.BigNumber.from("100000000000000000000000000");
+const dai_100000000 = ethers.BigNumber.from("100000000000000000000000000");
+await dai.approve(router.address, dai_100000000);
+console.log("dai approved")
+await mim.approve(router.address, mim_100000000);
+console.log("mim approved")
+
+await router.addLiquidity(mim.address, dai.address, mim_100000000, dai_100000000, mim_100000000, dai_100000000, owner.address, Date.now());
+
 }
 main()
   .then(() => process.exit(0))
